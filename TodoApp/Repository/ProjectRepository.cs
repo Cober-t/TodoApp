@@ -11,10 +11,14 @@ namespace TodoApp.Repository
     {
 
         private readonly ApplicationDbContext _context;
+
+        ApplicationDbContext IProjectRepository.Context => _context;
+
         public ProjectRepository(ApplicationDbContext context) 
         { 
             _context = context;
         }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -24,15 +28,18 @@ namespace TodoApp.Repository
         // ************ PROJECTS ************ //
         public async Task<IEnumerable<Project>> GetAllProjectsAsync()
         {
-            return await _context.Projects
-                .ToListAsync();
+            return await _context.Projects.ToListAsync();
         }
 
         public async Task<Project> GetProjectByIdAsync(int? id)
         {
             // To send query types: _context.Projects.Include(p => p.State)... 
-            return await (_context.Projects)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            return await (_context.Projects).FirstOrDefaultAsync(p => p.Id == id);
+        }
+        public async Task<Project> GetProjectByIdAsyncNoTracking(int? id)
+        {
+            // To send query types: _context.Projects.Include(p => p.State)... 
+            return await (_context.Projects).AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
         public int GetProjectsCount()
         {
@@ -65,11 +72,12 @@ namespace TodoApp.Repository
 
         public async Task<SubProject> GetSubProjectByIdAsync(int id)
         {
-            return await _context.SubProjects
-                .Include(p => p.Project)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.SubProjects.FirstOrDefaultAsync(p => p.Id == id);
         }
-
+        public async Task<SubProject> GetSubProjectByIdAsyncNoTracking(int id)
+        {
+            return await _context.SubProjects.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        }
         public bool AddSubProject(SubProject subProject)
         {
             _context.SubProjects.Add(subProject);
@@ -94,11 +102,14 @@ namespace TodoApp.Repository
             return await _context.Tasks.ToListAsync();
         }
 
-        public async Task<ToDo> GetTaskById(int id)
+        public async Task<ToDo> GetTaskByIdAsync(int id)
         {
             return await _context.Tasks
-                .Include(p => p.SubProject)
                 .FirstOrDefaultAsync(p => p.Id == id);
+        }
+        public async Task<ToDo> GetTaskByIdAsyncNoTracking(int id)
+        {
+            return await _context.Tasks.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public bool AddTask(ToDo task)

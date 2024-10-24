@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoApp.Data;
 
@@ -11,9 +12,11 @@ using TodoApp.Data;
 namespace TodoApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241022112202_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,8 +86,6 @@ namespace TodoApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectID");
-
                     b.ToTable("SubProjects");
 
                     b.HasData(
@@ -116,9 +117,6 @@ namespace TodoApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -130,10 +128,6 @@ namespace TodoApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("SubProjectID");
 
                     b.ToTable("Tasks");
 
@@ -206,37 +200,6 @@ namespace TodoApp.Migrations
                     b.HasOne("TodoApp.Models.User", null)
                         .WithMany("Projects")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("TodoApp.Models.SubProject", b =>
-                {
-                    b.HasOne("TodoApp.Models.Project", null)
-                        .WithMany("SubProjects")
-                        .HasForeignKey("ProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TodoApp.Models.ToDo", b =>
-                {
-                    b.HasOne("TodoApp.Models.Project", null)
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
-
-                    b.HasOne("TodoApp.Models.SubProject", "SubProject")
-                        .WithMany()
-                        .HasForeignKey("SubProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubProject");
-                });
-
-            modelBuilder.Entity("TodoApp.Models.Project", b =>
-                {
-                    b.Navigation("SubProjects");
-
-                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("TodoApp.Models.User", b =>

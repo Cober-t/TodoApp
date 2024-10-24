@@ -14,13 +14,13 @@ namespace TodoApp.Controllers
         public HomeController(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
-            //SeedData.Seed(_context);
+            //SeedData.Seed(_projectRepository.Context);
         }
 
         public async Task<IActionResult> Index()
         {
             IEnumerable<Project> projects = await _projectRepository.GetAllProjectsAsync();
-            return View(projects);
+            return View(_projectRepository.Context);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

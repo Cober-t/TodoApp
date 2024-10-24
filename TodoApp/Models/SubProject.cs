@@ -9,7 +9,7 @@ namespace TodoApp.Models
         public int Id { get; set; }
         [ForeignKey("Project Owner")]
         public int ProjectID { get; set; }
-        public Project Project { get; set; }
+        //public Project? Project { get; set; }
         [Required]
         public string Title { get; set; } = string.Empty;
     }

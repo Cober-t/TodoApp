@@ -18,36 +18,36 @@ namespace TodoApp.Models
         [NotMapped]
         public bool IsActive{ get; set; } = false;
         public Status State { get; set; } = Status.Pending;
-        public ICollection<SubProject>? SubProjects { get; set; } = null!;
-        public ICollection<ToDo>? Tasks { get; set; } = null!;
+        //public ICollection<SubProject>? SubProjects { get; set; } = null!;
+        //public ICollection<ToDo>? Tasks { get; set; } = null!;
 
-        public ICollection<SubProject>? GetSubProjects()
-        {
-            return SubProjects != null ? SubProjects : null;
-        }
+        //public ICollection<SubProject>? GetSubProjects()
+        //{
+        //    return SubProjects != null ? SubProjects.ToList() : null;
+        //}
 
-        public void AddSubProject(SubProject subProject)
-        {
-            if  (SubProjects == null)
-            {
-                SubProjects = new List<SubProject>();
-            }
-            SubProjects.Add(subProject);
-        }
+        //public void AddSubProject(SubProject subProject)
+        //{
+        //    if  (SubProjects == null)
+        //    {
+        //        SubProjects = new List<SubProject>();
+        //    }
+        //    SubProjects.Add(subProject);
+        //}
 
-        public ICollection<ToDo>? GetTasks()
-        {
-            return Tasks != null ? Tasks : null;
-        }
+        //public ICollection<ToDo>? GetTasks()
+        //{
+        //    return Tasks != null ? Tasks.ToList() : null;
+        //}
 
-        public void AddTask(ToDo newTask)
-        {
-            if (Tasks == null)
-            {
-                Tasks = new List<ToDo>();
-            }
-            Tasks.Add(newTask);
-        }
+        //public void AddTask(ToDo newTask)
+        //{
+        //    if (Tasks == null)
+        //    {
+        //        Tasks = new List<ToDo>();
+        //    }
+        //    Tasks.Add(newTask);
+        //}
 
         public void ChangeTitle(string newTitle)
         {

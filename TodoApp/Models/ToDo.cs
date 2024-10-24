@@ -14,7 +14,7 @@ namespace TodoApp.Models
 
         [ForeignKey("SubProject Owner")]
         public int SubProjectID { get; set; }
-        public SubProject? SubProject { get; set; }
+        //public SubProject? SubProject { get; set; }
 
         [Required]
         public string Title { get; set; } = string.Empty;

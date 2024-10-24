@@ -1,0 +1,34 @@
+﻿@using TodoApp.Data
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model ApplicationDbContext
+
+<h1 class="fw-bold text-align-center">TAREAS</h1>
+
+<div class="row align-items-md-stretch gap-3">
+    @foreach (Project project in Model.Projects.ToList())
+    {
+        <div class="row rounded-3 border border-2">
+            <h1>P: @project.Title</h1>
+            <div class="h-100 p-2 text-bg-dark">
+                @foreach (SubProject subProject in Model.SubProjects.ToList())
+                {
+                    if (subProject.ProjectID == project.Id)
+                    {
+                        <h2>SubP: @subProject.Title</h2>
+
+                        @foreach (ToDo task in Model.Tasks)
+                        {
+                            if  (task.SubProjectID == subProject.Id && subProject.ProjectID == project.Id)
+                            {
+                                <p>T: @task.Title</p>
+                            }
+                        }
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -36,8 +36,8 @@ namespace TodoApp.Data
 				new ToDo { Id = 3, SubProjectID = 3, Title = "Monte-Carlo Implementation 2" },
 				new ToDo { Id = 4, SubProjectID = 1, Title = "Task 1" },
 				new ToDo { Id = 5, SubProjectID = 1, Title = "Task 2" },
-                new ToDo { Id = 6, SubProjectID = 3, Title = "Monte-Carlo Implementation 3" }
-            );
-        }
+				new ToDo { Id = 6, SubProjectID = 3, Title = "Monte-Carlo Implementation 3" }
+			);
+		}
     }
 }

@@ -1,0 +1,96 @@
+﻿@using TodoApp.Data.Enum
+@model CreateEditProjectViewModel
+
+<h1 class="fw-bold align-items mb-5">Edita o añade un proyecto</h1>
+
+ <form method="post" asp-action="DeleteProject" enctype="multipart/form-data">
+    <input hidden type="text" id="ProjectID" name="ProjectID" value="@Model.ProjectID" />
+    <button type="submit" class="btn" style="background: #ff0000">Delete Project</button>
+</form>
+
+<form method="post" asp-action="EditProject" enctype="multipart/form-data">
+    
+    <input hidden value="ProjectID" type="hidden" id="ProjectID" />
+
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" placeholder="Enter a Title"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Value">Value</label>
+        <input asp-for="Value" class="form-control" placeholder="0"/>
+        <span asp-validation-for="Value" class="text-danger"></span>
+    </div>
+
+    @* <div class="form-group">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" type="color" class="form-control"  />
+        <span asp-validation-for="Color" class="text-danger"></span>
+    </div> *@
+
+    <div class="form-group">
+        <label asp-for="State">Estado</label>
+        <select asp-for="State" asp-items="@Html.GetEnumSelectList<Status>()" class="form-control">
+            <option>--Select--</option>
+        </select>
+        <span asp-validation-for="State" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" value="ProjectID">Modify Project</button>
+</form>
+@* SUBPROJECTS *@
+@* ... *@
+@if (Model != null && Model.SubProjects != null)
+{
+    @* ADD SUBPROJECTS *@
+    <form method="post" asp-action="AddSubProject" enctype="multipart/form-data">
+        <input hidden type="text" id="ProjectID" name="ProjectID" value="@Model.ProjectID" />
+        <input type="text" id="SubProjectTitle" name="SubProjectTitle" value="@Model.SubProjectTitle" />
+        <button type="submit" class="btn btn-primary">+</button>
+    </form>
+
+    foreach (SubProject subProject in Model.SubProjects)
+    {
+        if (subProject.ProjectID == Model.ProjectID)
+        {
+            @* SUBPROJECTS *@
+            <div style="display:flex; justify-content: left; flex-direction:row; align-items:center;" class="mt-5 gap-3">
+                <h5>SubP: @subProject.Title</h5>
+                <form method="post" asp-action="DeleteSubProject" enctype="multipart/form-data"
+                 style="display:flex; justify-content: left; flex-direction:row; align-items:center;">
+                    <input hidden type="text" id="SubProjectID" name="SubProjectID" value="@subProject.Id" />
+                    <div style="display:flex; justify-content: left; flex-direction:row; align-items:center; border: 1px solid red;">
+                        <button type="submit"
+                        style="display: inline-flex; align-items: center;font-size:42px; font-weight: bolder; color: #ff0000; background: #0f0f00; border:0; margin:0; padding:0;">
+                        -
+                        </button>
+                    </div>
+                </form>
+            </div>
+            @* ADD TASK *@
+            <form method="post" asp-action="AddTask" enctype="multipart/form-data">
+                <button type="submit" class="btn btn-primary">+</button>
+                <input hidden type="text" id="SubProjectID" name="SubProjectID" value="@subProject.Id" />
+                <input type="text" id="TaskTitle" name="TaskTitle" value="@Model.TaskTitle" />
+            </form>
+
+            foreach (ToDo task in Model.Tasks)
+            {
+                if (task.SubProjectID == subProject.Id)
+                {
+                    @* TASKS *@
+                    <div style="display:flex; justify-content: left;">
+                        <form method="post" asp-action="DeleteTask" enctype="multipart/form-data">
+                            <input hidden type="text" id="TaskID" name="TaskID" value="@task.Id" />
+                            <button type="submit" class="btn" style="background: #ff0000">-</button>
+                        </form>
+                        <p>Task: @task.Title</p>
+                    </div>
+                }
+            }
+        }
+    }
+}
+
+
